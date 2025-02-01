@@ -57,7 +57,9 @@ def get_odt_renderer(media_path: str | Path, env: Environment = environment) -> 
     media_path = Path(media_path)
 
     def image_filter(value):
-        return media_path / value
+        file_path = media_path.joinpath(value).resolve()
+        file_path.relative_to(media_path)   # validate subpath
+        return file_path
 
     def render(template_str: str, context: dict) -> str:
         return env.from_string(template_str).render(context)
